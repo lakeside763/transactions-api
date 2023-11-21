@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "password",
+    "database": "deel_dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "migrationStorageTableName": "sequelize_meta",
+    "modelsDir": "src/models",
+    "migrationsDir": "src/migrations"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "password",
+    "database": "deel_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "password",
+    "database": "deel_prod",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
