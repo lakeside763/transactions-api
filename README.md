@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # transactions-api
 =======
+=======
+>>>>>>> 464acb6 (chore: update documentation)
 ## Deel Backend Task
 - By Moses Idowu
 ### Getting Started
@@ -48,4 +51,7 @@ The app API was organised into two modules for easy maintainability
 - Setup CI/CD tools
 - Setup docker for the project
 - Add authentication
+<<<<<<< HEAD
+>>>>>>> 464acb6 (chore: update documentation)
+=======
 >>>>>>> 464acb6 (chore: update documentation)
