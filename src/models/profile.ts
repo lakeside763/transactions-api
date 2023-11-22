@@ -1,11 +1,13 @@
-import { Model, DataTypes, Sequelize } from "sequelize";
+import { Model, DataTypes } from "sequelize";
+import { sequelize } from "./index";
+import { Contract } from "./contract";
 
 export enum ProfileType {
   CLIENT = 'CLIENT',
   CONTRACTOR = 'CONTRACTOR'
 }
 
-type ProfileAttributes = {
+export type ProfileAttributes = {
   id: string,
   firstName: string,
   lastName: string,
@@ -14,9 +16,9 @@ type ProfileAttributes = {
   type: ProfileType,
 }
 
-const sequelize = new Sequelize()
-
-export class Profile extends Model<ProfileAttributes> {}
+export class Profile extends Model<ProfileAttributes> {
+  declare balance: number;
+}
 Profile.init(
   {
     id: {
@@ -51,4 +53,7 @@ Profile.init(
   }
 )
 
-
+Profile.hasMany(Contract, { foreignKey: 'clientId', as: 'ClientContracts' });
+Profile.hasMany(Contract, { foreignKey: 'contractorId', as: 'ContractorContracts' });
+Contract.belongsTo(Profile, { foreignKey: 'clientId', as: 'Client' });
+Contract.belongsTo(Profile, { foreignKey: 'contractorId', as: 'Contractor' });

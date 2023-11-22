@@ -1,18 +1,21 @@
-import { Model, Sequelize, DataTypes } from "sequelize"
+import { Model, DataTypes } from "sequelize"
+import { sequelize } from "./index";
+import { Contract } from "./contract";
 
 type JobAttributes = {
   id: string,
   description: string,
   price: string,
-  paid: any
+  paid: Boolean
   paymentDate: Date,
   contractId: string,
+  createdAt: Date,
 }
 
-const sequelize = new Sequelize()
-
-export class Contract extends Model<JobAttributes> {}
-Contract.init(
+export class Job extends Model<JobAttributes> {
+  declare price: number;
+}
+Job.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -40,12 +43,17 @@ Contract.init(
         model: 'Contract',
         key: 'id'
       }
+    },
+    createdAt: {
+      type: DataTypes.DATE
     }
   },
   {
     sequelize,
     timestamps: true,
-    tableName: 'contracts',
-    modelName: 'Contract'
+    tableName: 'jobs',
+    modelName: 'Job'
   }
-)
+);
+
+Job.belongsTo(Contract, { foreignKey: 'contractId' });

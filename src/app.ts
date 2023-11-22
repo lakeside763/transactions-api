@@ -14,13 +14,17 @@ app.use(helmet())
 app.use(express.json());
 
 import transactions from './modules/transactions';
+import admin from './modules/admin';
+import middlewares from './middlewares';
 
 const apiRouter = Router();
 apiRouter.use(transactions)
+apiRouter.use(admin);
 
 const v1Router = Router();
 v1Router.use('/deel/v1', apiRouter);
 
 app.use(v1Router);
+app.use(middlewares.errorHandler)
 
 export default app;

@@ -1,7 +1,135 @@
+import { Op } from 'sequelize';
+import { Contract, StatusType } from "../../models/contract"
+import { Job } from "../../models/job";
+import { Profile, ProfileType } from "../../models/profile";
+import { sequelize } from '../../models';
+
 export default class TransactionService {
   constructor() {}
 
-  getAllTransactions = async () => {
-    return { message: 'Transactions retrieve successfully' }
+  getContracts = async () => {
+    const contracts = await Contract.findAll({
+      where: { 
+        status: {
+          [Op.not]: StatusType.TERMINATED
+        }
+      }
+    });
+    return contracts;
+  }
+
+  getContract = async (id: string) => {
+    const contract = await Contract.findByPk(id);
+    if (!contract) {
+      throw { errorCode: 400, message: 'Invalid ID was provided' };
+    }
+    return contract;
+  }
+
+  getJobsByPaidStatus = async (paidStatus: string) => {
+    const status = paidStatus === 'unpaid' ? false : true;
+    const unpaidJobs = await Job.findAll({
+      where: { 
+        paid: status,
+      },
+      include: [{
+        model: Contract,
+        where: {
+          status: StatusType.IN_PROGRESS
+        }
+      }]
+    });
+    return unpaidJobs;
+  }
+
+  processJobPayment = async ({ jobId, clientId }: { jobId: string, clientId: string }) => {
+    const job = await Job.findByPk(jobId);
+
+    if (!job) {
+      throw { errorCode: 400, message: 'Invalid job ID was provided' };
+    }
+
+    const client = await Profile.findOne({
+      where: {
+        id: clientId,
+        type: ProfileType.CLIENT,
+      },
+    });
+
+    if (!client) {
+      throw { errorCode: 400, message: 'Invalid client ID was provided' };
+    }
+
+    if (client.balance < job.price) {
+      throw { errorCode: 400, message: 'Insufficient client balance' };
+    }
+
+    const newBalance = Number(client.balance) - Number(job.price);
+
+    await sequelize.transaction(async (t) => {
+      await Job.update({ paid: true }, {
+        where: {
+          id: jobId,
+        },
+        transaction: t,
+      });
+
+      await Profile.update({ balance: newBalance }, {
+        where: {
+          id: clientId,
+        },
+        transaction: t,
+      });
+    });
+
+    return { message: `Job ${jobId} paid successfully` };
+  }
+
+  processDeposit = async ({ clientId, amount }: { clientId: string, amount: number }) => {
+    const client = await Profile.findOne({
+      where: {
+        id: clientId,
+        type: ProfileType.CLIENT,
+      },
+    });
+
+    if (!client) {
+      throw { errorCode: 400, message: 'Invalid client ID was provided' };
+    }
+
+    const unpaidContractIds = await Contract.findAll({
+      attributes: ['id'],
+      where: {
+        status: StatusType.IN_PROGRESS,
+        clientId,
+      },
+      raw: true,
+    });
+
+    const contractIds = unpaidContractIds.map((contract: any) => contract.id);
+
+    const totalUnpaidJobsAmount = await Job.sum('price', {
+      where: {
+        paid: false,
+        contractId: {
+          [Op.in]: contractIds,
+        },
+      },
+    });
+
+    const by25Percent = totalUnpaidJobsAmount * 0.25;
+
+    if (client.balance + amount > by25Percent) {
+      throw { errorCode: 400, message: `Deposit cannot be more than 25% of total unpaid job prices: ${by25Percent}` };
+    }
+
+    const newBalance = client.balance + amount;
+    await Profile.update({ balance: newBalance }, {
+      where: {
+        id: clientId,
+      },
+    });
+
+    return { message: 'Amount deposited successfully' };
   }
 }

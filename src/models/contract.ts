@@ -1,6 +1,7 @@
-import { Model, Sequelize, DataTypes } from "sequelize"
+import { Model, DataTypes } from "sequelize";
+import { sequelize } from "./index";
 
-enum StatusType {
+export enum StatusType {
   NEW = 'NEW',
   IN_PROGRESS = 'IN_PROGRESS',
   TERMINATED = 'TERMINATED',
@@ -14,9 +15,9 @@ type ContractAttributes = {
   contractorId: any
 }
 
-const sequelize = new Sequelize()
-
-export class Contract extends Model<ContractAttributes> {}
+export class Contract extends Model<ContractAttributes> {
+  declare id: string;
+}
 Contract.init(
   {
     id: {
@@ -52,4 +53,5 @@ Contract.init(
     tableName: 'contracts',
     modelName: 'Contract'
   }
-)
+);
+
