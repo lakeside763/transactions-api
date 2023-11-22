@@ -4,7 +4,7 @@ import compression from 'compression';
 import helmet from 'helmet';
 import pino from 'pino';
 
-dotenv.config();
+dotenv.config({ path: process.env.NODE_ENV === 'test' ? '.env.test.local' : '.env' });
 export const logger = pino({ level: 'trace' });
 
 const app = express();

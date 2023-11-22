@@ -56,4 +56,3 @@ Job.init(
   }
 );
 
-Job.belongsTo(Contract, { foreignKey: 'contractId' });

@@ -1,18 +1,15 @@
-// @ts-nocheck
-import * as fs from 'fs';
-import * as path from 'path';
-import { Sequelize } from 'sequelize';
-import process from 'process';
-import * as dotenv from 'dotenv';
+'use strict';
 
-dotenv.config({ path: process.env.NODE_ENV === 'test' ? '.env.test.local' : '.env.local' });
-const basename: string = path.basename(__filename);
-const env: string = (process.env.NODE_ENV as string);
-const config: { [key: string]: any } = require(path.join(__dirname, '../../config/config.js'))[env];
-const db: any = {};
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const process = require('process');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config/config.js')[env];
+const db = {};
 
-let sequelize: Sequelize;
-
+let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
@@ -43,4 +40,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-export { db, sequelize };
+module.exports = db;

@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { Contract, StatusType } from "../../models/contract"
+import { Contract, StatusType } from '../../models/contract';
 import { Job } from "../../models/job";
 import { Profile, ProfileType } from "../../models/profile";
 import { sequelize } from '../../models';
@@ -43,11 +43,16 @@ export default class TransactionService {
   }
 
   processJobPayment = async ({ jobId, clientId }: { jobId: string, clientId: string }) => {
-    const job = await Job.findByPk(jobId);
-
+    const job: any = await Job.findByPk(jobId, {
+      include: [{
+        model: Contract,
+        attributes: ['contractorId'],
+      }],
+    });
+    
     if (!job) {
       throw { errorCode: 400, message: 'Invalid job ID was provided' };
-    }
+    };
 
     const client = await Profile.findOne({
       where: {
@@ -55,16 +60,17 @@ export default class TransactionService {
         type: ProfileType.CLIENT,
       },
     });
-
     if (!client) {
       throw { errorCode: 400, message: 'Invalid client ID was provided' };
     }
-
     if (client.balance < job.price) {
       throw { errorCode: 400, message: 'Insufficient client balance' };
     }
 
     const newBalance = Number(client.balance) - Number(job.price);
+    const contractorId = job.Contract.contractorId;
+    const contractor = await Profile.findByPk(contractorId);
+    const contractorNewBalance = Number(contractor?.balance) + Number(job.price);
 
     await sequelize.transaction(async (t) => {
       await Job.update({ paid: true }, {
@@ -80,6 +86,13 @@ export default class TransactionService {
         },
         transaction: t,
       });
+
+      await Profile.update({ balance: contractorNewBalance }, {
+        where: {
+          id: contractorId,
+        },
+        transaction: t
+      })
     });
 
     return { message: `Job ${jobId} paid successfully` };

@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "./index";
+import { Job } from "./job";
 
 export enum StatusType {
   NEW = 'NEW',
@@ -54,4 +55,3 @@ Contract.init(
     modelName: 'Contract'
   }
 );
-

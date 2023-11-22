@@ -1,6 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "./index";
 import { Contract } from "./contract";
+import { Job } from "./job";
 
 export enum ProfileType {
   CLIENT = 'CLIENT',
@@ -17,6 +18,7 @@ export type ProfileAttributes = {
 }
 
 export class Profile extends Model<ProfileAttributes> {
+  declare id: string
   declare balance: number;
 }
 Profile.init(
@@ -57,3 +59,5 @@ Profile.hasMany(Contract, { foreignKey: 'clientId', as: 'ClientContracts' });
 Profile.hasMany(Contract, { foreignKey: 'contractorId', as: 'ContractorContracts' });
 Contract.belongsTo(Profile, { foreignKey: 'clientId', as: 'Client' });
 Contract.belongsTo(Profile, { foreignKey: 'contractorId', as: 'Contractor' });
+Contract.hasMany(Job, { foreignKey: 'contractId' })
+Job.belongsTo(Contract, { foreignKey: 'contractId' });
