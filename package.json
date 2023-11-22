@@ -9,7 +9,8 @@
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "migration:create": "sequelize migration:create --migrations-path src/migrations",
     "db:migrate": "sequelize db:migrate --migrations-path src/migrations",
-    "db:rollback": "sequelize db:migrate:undo --migrations-path src/migrations"
+    "db:rollback": "sequelize db:migrate:undo --migrations-path src/migrations",
+    "db:seed": "sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",
