@@ -1,6 +1,5 @@
 import { Model, DataTypes } from "sequelize"
 import { sequelize } from "./index";
-import { Contract } from "./contract";
 
 type JobAttributes = {
   id: string,
@@ -14,6 +13,7 @@ type JobAttributes = {
 
 export class Job extends Model<JobAttributes> {
   declare price: number;
+  declare paid: boolean;
 }
 Job.init(
   {

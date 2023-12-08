@@ -54,6 +54,10 @@ export default class TransactionService {
       throw { errorCode: 400, message: 'Invalid job ID was provided' };
     };
 
+    if (job.paid === true) {
+      throw { errorCode: 400, message: 'The payment for the job has already been processed' }
+    }
+
     const client = await Profile.findOne({
       where: {
         id: clientId,
@@ -63,7 +67,8 @@ export default class TransactionService {
     if (!client) {
       throw { errorCode: 400, message: 'Invalid client ID was provided' };
     }
-    if (client.balance < job.price) {
+
+    if (Number(client.balance) < Number(job.price)) {
       throw { errorCode: 400, message: 'Insufficient client balance' };
     }
 
@@ -132,7 +137,7 @@ export default class TransactionService {
 
     const by25Percent = totalUnpaidJobsAmount * 0.25;
 
-    if (client.balance + amount > by25Percent) {
+    if (Number(client.balance) + amount > by25Percent) {
       throw { errorCode: 400, message: `Deposit cannot be more than 25% of total unpaid job prices: ${by25Percent}` };
     }
 

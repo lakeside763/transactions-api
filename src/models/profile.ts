@@ -44,7 +44,8 @@ Profile.init(
       type: DataTypes.DECIMAL(12, 2),
     },
     type: {
-      type: DataTypes.ENUM(ProfileType.CLIENT, ProfileType.CONTRACTOR),
+      type: DataTypes.ENUM,
+      values: [ProfileType.CLIENT, ProfileType.CONTRACTOR]
     },
   },
   {

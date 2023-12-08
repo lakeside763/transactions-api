@@ -14,7 +14,7 @@ export class AdminController {
       const data = await this.adminService.getProfessionsWithBestPaid({ start, end, limit });
       return res.json(data);
     } catch (err) {
-      next(err)
+      return next(err)
     }
   }
 
@@ -24,7 +24,7 @@ export class AdminController {
       const data = await this.adminService.getClientsWithBestPaid({ start, end, limit });
       return res.json(data);
     } catch (err) {
-      next(err)
+      return next(err)
     }
   }
 }

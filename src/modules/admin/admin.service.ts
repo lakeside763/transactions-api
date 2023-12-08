@@ -14,12 +14,8 @@ export class AdminService {
   constructor() {}
 
   getProfessionsWithBestPaid = async ({ start, end, limit }: BestPaidInputTypes) => {
-    const currentDate = new Date();
-    const startOfCurrentDay = startOfDay(currentDate);
-    const endOfCurrentDay = endOfDay(currentDate);
-  
-    const startDate = start ? new Date(start) : startOfCurrentDay;
-    const endDate = end ? new Date(end) : endOfCurrentDay;
+    const startDate = start ? startOfDay(new Date(start)) : startOfDay(new Date());
+    const endDate = end ? endOfDay(new Date(end)) : endOfDay(new Date());
     limit = limit || 1;
   
     const profiles = await Profile.findAll({
@@ -43,18 +39,18 @@ export class AdminService {
           contractId: {
             [Op.in]: contractsIds
           },
-          createdAt: {
+          paymentDate: {
             [Op.gt]: startDate,
             [Op.lte]: endDate,
           }
         }
       });
   
-      return { profession, sum: sumOfJobsPaid || 0 };
+      return { id, profession, sum: sumOfJobsPaid || 0 };
     }));
   
     const sumByProfession = mapProfileContract.reduce((result: any, current) => {
-      const existingProfession = result.find((item: { profession: any; }) => item.profession === current.profession);
+      const existingProfession = result.find((item: { profession: string; }) => item.profession === current.profession);
       if (existingProfession) {
         existingProfession.sum += current.sum;
       } else {
@@ -75,8 +71,8 @@ export class AdminService {
     const startOfCurrentDay = startOfDay(currentDate);
     const endOfCurrentDay = endOfDay(currentDate);
   
-    const startDate = start ? new Date(start) : startOfCurrentDay;
-    const endDate = end ? new Date(end) : endOfCurrentDay;
+    const startDate = start ? startOfDay(new Date(start)) : startOfCurrentDay;
+    const endDate = end ? endOfDay(new Date(end)) : endOfCurrentDay;
     limit = limit || 1;
   
     const profiles = await Profile.findAll({
@@ -92,7 +88,7 @@ export class AdminService {
           clientId: id,
           status: StatusType.IN_PROGRESS
         }
-      });
+      })
   
       const contractsIds = contracts.map(({ id }) => id);
       const sumOfJobsPaid = await Job.sum('price', {
@@ -100,7 +96,7 @@ export class AdminService {
           contractId: {
             [Op.in]: contractsIds
           },
-          createdAt: {
+          paymentDate: {
             [Op.gt]: startDate,
             [Op.lte]: endDate,
           }

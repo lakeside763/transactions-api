@@ -13,7 +13,7 @@ export default class TransactionController {
       const data = await this.transactionService.getContracts();
       return res.json(data);
     } catch (err) {
-      next(err)
+      return next(err)
     }
   }
 
@@ -23,7 +23,7 @@ export default class TransactionController {
       const data = await this.transactionService.getContract(id);
       return res.json(data);
     } catch (err) {
-      next(err)
+      return next(err)
     }
   }
 
@@ -33,7 +33,7 @@ export default class TransactionController {
       const data = await this.transactionService.getJobsByPaidStatus(paidStatus);
       return res.json(data);
     } catch (err) {
-      next(err)
+      return next(err)
     }
   }
 
@@ -44,7 +44,7 @@ export default class TransactionController {
       const data = await this.transactionService.processJobPayment({ jobId, clientId });
       return res.json(data);
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 
@@ -55,7 +55,7 @@ export default class TransactionController {
       const data = await this.transactionService.processDeposit({ clientId: userId, amount });
       return res.json(data);
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 }
