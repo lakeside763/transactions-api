@@ -100,7 +100,7 @@ export default class TransactionService {
       })
     });
 
-    return { message: `Job ${jobId} paid successfully` };
+    return { message: `Job ID ${jobId} paid successfully` };
   }
 
   processDeposit = async ({ clientId, amount }: { clientId: string, amount: number }) => {
