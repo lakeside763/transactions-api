@@ -1,5 +1,3 @@
-import request from 'supertest';
-import app from '../app';
 import { sequelize } from '../models';
 import { Profile } from '../models/profile';
 import { Contract } from '../models/contract';
@@ -93,7 +91,7 @@ describe('test transaction requests', () => {
     const jobs = await Job.bulkCreate(sampleJobs); 
 
     const payload = { "clientId": '173a42dc-c3cc-4a67-ace5-2fc3a1052cd0' }
-    const jobId = 'f0baa55a-bf90-466e-9e73-9b493781c58c';
+    const jobId = jobs[0].id;
     const response = await clientRequest(
       `/transactions/jobs/${jobId}/pay`,
       'post',

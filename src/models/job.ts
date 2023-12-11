@@ -2,16 +2,17 @@ import { Model, DataTypes } from "sequelize"
 import { sequelize } from "./index";
 
 type JobAttributes = {
-  id: string,
+  id: string;
   description: string,
-  price: string,
-  paid: Boolean
-  paymentDate: Date,
-  contractId: string,
-  createdAt: Date,
+  price: string;
+  paid: Boolean;
+  paymentDate: Date;
+  contractId: string;
+  createdAt: Date;
 }
 
 export class Job extends Model<JobAttributes> {
+  declare id: string;
   declare price: number;
   declare paid: boolean;
 }
