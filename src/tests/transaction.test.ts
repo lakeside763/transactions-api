@@ -73,7 +73,6 @@ describe('test transaction requests', () => {
 
   // Integration testing
   test('should fetch list of contracts', async () => {
- 
     const profiles = await Profile.bulkCreate(sampleProfiles)
     const contracts = await Contract.bulkCreate(sampleContracts);
     
@@ -86,17 +85,17 @@ describe('test transaction requests', () => {
   })
 
   test('should process a payment for a contractor', async () => {
-    const profiles = await Profile.bulkCreate(sampleProfiles)
+    const profiles = await Profile.bulkCreate(sampleProfiles);
     const contracts = await Contract.bulkCreate(sampleContracts);
     const jobs = await Job.bulkCreate(sampleJobs); 
 
-    const payload = { "clientId": '173a42dc-c3cc-4a67-ace5-2fc3a1052cd0' }
+    const payload = { "clientId": profiles[0].id };
     const jobId = jobs[0].id;
     const response = await clientRequest(
       `/transactions/jobs/${jobId}/pay`,
       'post',
       payload
-    )
+    );
 
     expect(response.status).toBe(200);
     expect(response.body.message).toEqual(`Job ID ${jobId} paid successfully`)
