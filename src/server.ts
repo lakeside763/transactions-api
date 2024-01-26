@@ -31,7 +31,7 @@ if (cluster.isPrimary && process.env.NODE_ENV === 'production') {
   })
 } else {
   const server = http.createServer(app);
-  const port = process.env.PORT;
+  const port = process.env.PORT || 4500;
   connectDB();
 
   server.listen(port, () => {
