@@ -13,7 +13,7 @@ vpc:
     gateway: HighlyAvailable
 
 managedNodeGroups:
-  - name: deel-eks-node-group
+  - name: deel-eks-node-group-managed-nodes
     instanceType: t3.medium
     desiredCapacity: 5
     minSize: 3

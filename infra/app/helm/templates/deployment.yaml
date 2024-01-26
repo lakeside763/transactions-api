@@ -7,7 +7,7 @@ metadata:
     app: {{ template "deel-api.name" . }}
     chart: {{ template "deel-api.chart" . }}
     release: {{ .Release.Name }}
-    heritage: {{ Release.Service }}
+    heritage: {{ .Release.Service }}
 spec:
   selector:
     matchLabels:
@@ -34,5 +34,5 @@ spec:
       affinity:
 {{ toYaml .Values.affinity | indent 8 }}
       tolerations:
-{{ toYaml .Values.tolerations | 8 }}            
+{{ toYaml .Values.tolerations | indent 8 }}            
       
