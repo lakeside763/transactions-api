@@ -5,7 +5,7 @@
 
 # 2. Getting NodeGroup IAM Role from kubernetes cluster
   # nodegroup_iam_role=$(aws cloudformation list-exports --query "Exports[?contains(Name, 'nodegroup-deel::InstanceRoleARN')].Value" --output text | xargs | cut -d "/" -f 2)
-  nodegroup_iam_role=$(aws eks describe-nodegroup --cluster-name deel-cluster  --nodegroup-name deel-node-groups --query nodegroup.nodeRole --output text | xargs | cut -d "/" -f 2)
+  nodegroup_iam_role=$(aws eks describe-nodegroup --cluster-name deel-eks  --nodegroup-name deel-eks-node-groups --query nodegroup.nodeRole --output text | xargs | cut -d "/" -f 2)
 
 
 # 3. Installing Load Balancer Controller
