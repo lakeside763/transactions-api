@@ -2,12 +2,13 @@
 
 nameOverride: deel-api
 replicaCount: 1
-baseDomain: deel.com
+baseDomain: deel.local
 
 aws:
   region: us-east-1
 
 image:
+  # repository: lakeside763/deel
   repository: 544025436226.dkr.ecr.us-east-1.amazonaws.com/deel
   tag: latest
   pullPolicy: IfNotPresent
