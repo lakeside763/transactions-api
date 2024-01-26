@@ -8,7 +8,7 @@ aws:
   region: us-east-1
 
 image:
-  repository: 131185384471.dkr.ecr.us-east-1.amazonaws.com/bookstore-inventory-api
+  repository: 054135280166.dkr.ecr.us-east-1.amazonaws.com/deel-api
   tag: latest
   pullPolicy: IfNotPresent
 
