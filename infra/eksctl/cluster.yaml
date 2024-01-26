@@ -3,7 +3,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: deel-cluster
+  name: deel-eks
   region: us-east-1
   version: "1.27"
 
@@ -13,7 +13,7 @@ vpc:
     gateway: HighlyAvailable
 
 managedNodeGroups:
-  - name: deel-node-groups
+  - name: deel-eks-node-groups
     instanceType: t3.medium
     desiredCapacity: 2
     privateNetworking: true

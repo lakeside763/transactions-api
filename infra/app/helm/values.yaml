@@ -8,9 +8,12 @@ aws:
   region: us-east-1
 
 image:
-  repository: 174822970548.dkr.ecr.us-east-1.amazonaws.com/deel
+  repository: 544025436226.dkr.ecr.us-east-1.amazonaws.com/deel
   tag: latest
   pullPolicy: IfNotPresent
+
+deployment:
+  name: deel-api-depl
 
 service:
   name: deel-api-svc
