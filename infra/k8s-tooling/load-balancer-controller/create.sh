@@ -2,7 +2,7 @@ helm repo add eks https://aws.github.io/eks-charts
 
 helm upgrade --install \
   -n kube-system \
-  --set clusterName=deel-eks \
+  --set clusterName=deel-cluster \
   --set serviceAccount.create=true \
   aws-load-balancer-controller eks/aws-load-balancer-controller
 

@@ -8,7 +8,7 @@ aws:
   region: us-east-1
 
 image:
-  repository: 054135280166.dkr.ecr.us-east-1.amazonaws.com/deel-api
+  repository: 174822970548.dkr.ecr.us-east-1.amazonaws.com/deel
   tag: latest
   pullPolicy: IfNotPresent
 

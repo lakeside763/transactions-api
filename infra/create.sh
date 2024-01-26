@@ -4,7 +4,7 @@
   chmod -R u+x transactions-api
 
 # 2. Getting NodeGroup IAM Role from kubernetes cluster
-  nodegroup_iam_role=$(aws cloudformation list-exports --query "Exports[?contains(Name, 'deel-eks-node-group-managed-nodes::InstanceRoleARN')].Value" --output text | xargs | cut -d "/" -f 2)
+  nodegroup_iam_role=$(aws cloudformation list-exports --query "Exports[?contains(Name, 'deel-eks2-node-group-managed-nodes::InstanceRoleARN')].Value" --output text | xargs | cut -d "/" -f 2)
 
 # 3. Installing Load Balancer Controller
   ( cd ./infra/k8s-tooling/load-balancer-controller && ./create.sh )

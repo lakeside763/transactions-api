@@ -3,7 +3,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: deel-eks
+  name: deel-cluster
   region: us-east-1
   version: "1.27"
 
@@ -13,12 +13,10 @@ vpc:
     gateway: HighlyAvailable
 
 managedNodeGroups:
-  - name: deel-eks-node-group-managed-nodes
+  - name: deel-node-groups
     instanceType: t3.medium
-    desiredCapacity: 5
-    minSize: 3
-    maxSize: 5
+    desiredCapacity: 2
     privateNetworking: true
 
-availabilityZones: ["us-east-1a", "us-east-1b", us-east-1c]
+availabilityZones: ["us-east-1a", "us-east-1b"]
 # yamllint enable rule:rule-name
