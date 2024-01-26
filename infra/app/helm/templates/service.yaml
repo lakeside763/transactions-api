@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "deel-api.name" . }}
+    chart: {{ template "deel-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ template "deel-api.name" . }}
+    release: {{ .Release.Name }}
+  ports:
+  - name: http
+    protocol: TCP
+    port: {{ .Values.service.http.servicePort }}
+    targetPort: {{ .Values.service.http.containerPort }}
+  - name: https
+    protocol: TCP
+    port: {{ .Values.service.https.servicePort }}
+    targetPort: {{ .Values.service.https.containerPort }}

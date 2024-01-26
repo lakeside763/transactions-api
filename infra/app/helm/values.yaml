@@ -1,0 +1,43 @@
+#Default values for deep-challenge-api
+
+nameOverride: deel-api
+replicaCount: 1
+baseDomain: deel.com
+
+aws:
+  region: us-east-1
+
+image:
+  repository: 131185384471.dkr.ecr.us-east-1.amazonaws.com/bookstore-inventory-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  name: deel-api-svc
+  http: 
+    type: NodePort
+    containerPort: 4500
+    name: deel-api-svc
+    scheme: internet-facing
+    servicePort: 80
+  https: 
+    type: NodePort
+    containerPort: 4500
+    name: deel-api-svc
+    scheme: internet-facing
+    servicePort: 433
+  type: NodePort
+
+resources: {}
+  # requests:
+  #   cpu: 100m
+  #   memory: 100Mi
+  # limits:
+  #   cpu: 200m
+  #   memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,24 @@
+# yamllint disable rule:rule-name
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: deel-eks
+  region: us-east-1
+  version: "1.27"
+
+vpc:
+  cidr: 10.0.0.0/16
+  nat:
+    gateway: HighlyAvailable
+
+managedNodeGroups:
+  - name: deel-eks-node-group
+    instanceType: t3.medium
+    desiredCapacity: 5
+    minSize: 3
+    maxSize: 5
+    privateNetworking: true
+
+availabilityZones: ["us-east-1a", "us-east-1b", us-east-1c]
+# yamllint enable rule:rule-name
