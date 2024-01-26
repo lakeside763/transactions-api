@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: {{ .Values.service.name }}
   namespace: {{ .Release.Namespace }}
   labels:
@@ -9,11 +9,11 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "deel-api.name" . }}
       release: {{ .Release.Name }}
-  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
@@ -25,8 +25,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: {{ .Values.service.http.name }}
+            - name: http
               containerPort: {{ .Values.service.http.containerPort }}
+              protocol: TCP
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       nodeSelector:

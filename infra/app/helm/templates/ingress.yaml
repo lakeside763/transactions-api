@@ -1,14 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: deel-api-development-ingress-svc
+  name: {{ .Release.Name }}-ingress
+  labels:
+    app: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
   annotations:
     kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/scheme: {{ .Values.service.http.scheme }}
     alb.ingress.kubernetes.io/actions.redirect: "{\"Type\": \"redirect\", \"RedirectConfig\": {\"Protocol\": \"HTTPS\", \"Port\": \"443\", \"StatusCode\": \"HTTP_301\"}}"
     alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\":80,\"HTTPS\": 443}]"
     alb.ingress.kubernetes.io/load-balancer-attributes: "idle_timeout.timeout_seconds=360"
-    alb.ingress.kubernetes.io/group.name: development
+    alb.ingress.kubernetes.io/group.name: {{ .Release.Namespace }}
 spec:
   rules:
     - host: api.{{ .Values.baseDomain }}
@@ -25,6 +30,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service: 
-                name: deel-api-svc-development
+                name: {{ .Values.service.name }}
                 port:
-                  number:  80
+                  number:  {{ .Values.service.http.servicePort }}

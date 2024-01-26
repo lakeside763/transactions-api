@@ -10,15 +10,11 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.http.servicePort }}
+      targetPort: http
+      protocol: TCP
+      name: http
   selector:
     app: {{ template "deel-api.name" . }}
     release: {{ .Release.Name }}
-  ports:
-  - name: http
-    protocol: TCP
-    port: {{ .Values.service.http.servicePort }}
-    targetPort: {{ .Values.service.http.containerPort }}
-  - name: https
-    protocol: TCP
-    port: {{ .Values.service.https.servicePort }}
-    targetPort: {{ .Values.service.https.containerPort }}
