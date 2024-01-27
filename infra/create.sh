@@ -1,7 +1,7 @@
 # 1. Create the kubernetes cluster
-  eksctl create cluster -f infra/eksctl/cluster.yaml
+  # eksctl create cluster -f infra/eksctl/cluster.yaml
 
-  chmod -R u+x transactions-api
+  # chmod -R u+x transactions-api
 
 # 2. Getting NodeGroup IAM Role from kubernetes cluster
   # nodegroup_iam_role=$(aws cloudformation list-exports --query "Exports[?contains(Name, 'nodegroup-deel::InstanceRoleARN')].Value" --output text | xargs | cut -d "/" -f 2)
